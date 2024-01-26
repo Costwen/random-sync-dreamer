@@ -285,14 +285,7 @@ class SpatialVolumeNet(nn.Module):
         # print(Ks.shape)
         # Ks_ = Ks[:,target_indices].reshape(-1, 3, 3) # B*TN,3,4
 
-        volume_xyz, volume_depth = create_target_volume(D, self.frustum_volume_size, self.input_image_size, poses_, Ks_, near, far) # B*TN,3 or 1,D,H,W
-        import matplotlib.pyplot as plt
-        fig = plt.figure(figsize=(10, 10))
-        ax = fig.add_subplot(111, projection='3d')
-        xyz = volume_xyz[0].reshape(3, -1).permute(1, 0).cpu().numpy()
-        ax.scatter(xyz[:, 0], xyz[:, 1], xyz[:, 2], c="r", s=2)
-        plt.savefig(f"visual/3d_point_{0}.png")
-        exit()
+        volume_xyz, volume_depth = create_target_volume(D, self.frustum_volume_size, self.input_image_size, poses_, Ks_, near, far) # B*TN,3 or 1,D,H,
         volume_xyz_ = volume_xyz / self.spatial_volume_length  # since the spatial volume is constructed in [-spatial_volume_length,spatial_volume_length]
         volume_xyz_ = volume_xyz_.permute(0, 2, 3, 4, 1)  # B*TN,D,H,W,3
         spatial_volume_ = spatial_volume.unsqueeze(1).repeat(1, TN, 1, 1, 1, 1).view(B * TN, -1, V, V, V)
