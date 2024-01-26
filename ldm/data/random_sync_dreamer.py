@@ -164,7 +164,7 @@ class MultiViewDataset(Dataset):
         return k_nearest_indices
 
     def __len__(self):
-        return len(self.obj_paths) * 100
+        return len(self.obj_paths)
 
     def __getitem__(self, index):
         num_views = self.num_views
